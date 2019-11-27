@@ -7,12 +7,14 @@
 
 g++ lifeMain.cpp life.cpp
 
-g++ -c -g lifeMain.cpp life.cpp 
-g++ -o main lifeMain.o life.o
+g++ -c -g lifeMain.cpp life.cpp arrays.c
+g++ -o main lifeMain.o life.o arrays.o
 */
 
 #include <iostream>
+#include <stdlib.h>
 #include "life.h"
+#include "arrays.h"
 
 using namespace std;
 
@@ -24,7 +26,7 @@ Post: Istructions for using the Life program have been printed
 {
 	cout << "-------------------------------------------------------------------------\n"; 
 	cout << "Conway's game of Life \n";
-	cout << "This game uses a grid of size [" << maxrow << " X " <<maxcol <<"] in which \n";
+	cout << "This game uses a grid of size [" << MAXROW << " X " <<MAXCOL <<"] in which \n";
 	cout <<	"each cell can either be occupied by an organism or not. \n";
 	cout << "-------------------------------------------------------------------------\n"; 
 }
@@ -61,19 +63,24 @@ Post: Verifies that the method neighbor_count() returns the coorrect values
 Uses: The class Life and its method initialize()
 */
 {
+
+	srand(time(0));		//this is because of function that randomly populate grid by zeroes and ones
 	instructions();
 
 	Life configuration;
-	configuration.initialize();
+	//configuration.generateRandomGrid();		//warning there is memory leak!
+	//configuration.initialize();				//clumsy manual initialization by setting coordinates for every cell
 	configuration.print();
 
 
-	for(int row = 1; row <= maxrow; row++)
+	/*
+	for(int row = 1; row <= MAXROW; row++)
 	{
-		for(int col = 1; col <= maxcol; col++)
+		for(int col = 1; col <= MAXCOL; col++)
 			cout << configuration.neighbor_count(row,col) <<" ";
 		cout << "\n";
 	}
-	
+	*/
+	configuration.deallocateGrid();
 	return 0;
 }
